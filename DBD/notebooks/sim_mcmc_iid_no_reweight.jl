@@ -7,7 +7,8 @@ include("../utils.jl")
 n_samples = 13310
 n_sweeps = 200
 n_burnin = 100
-n_sim = 5
+n_sim = 15
+offset_sim = 5
 output_root = "/home/matteo/Projects/PhyloBM/DBD/notebooks/mcmc_iid_no_reweight"
 #-----------------------
 
@@ -24,7 +25,7 @@ Threads.@threads for i in 1:n_sim
     parameters_iid_mcmc= SamplingParameters(Teq = n_sweeps*L, burnin = n_burnin*L, step_meaning = :proposed)
 
     results_iid_mcmc_no_reweight = mcmc_sample(potts_no_reweight, n_samples, parameters_iid_mcmc, init=wt_int)
-    write_sequences(results_iid_mcmc_no_reweight.sequences.data, output_root * "_sim$i.fasta", aa_alphabet)
+    write_sequences(results_iid_mcmc_no_reweight.sequences.data, output_root * "_sim$(offset_sim + i).fasta", aa_alphabet)
     println("Simulation $i/$n_sim completed.")
 end
 
